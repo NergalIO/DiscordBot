@@ -8,6 +8,7 @@
 
 from dotenv import load_dotenv
 import logger_app
+import core
 import os
 
 #############################################
@@ -60,4 +61,5 @@ else:
 #############################################
 #############################################
 
-
+core = core.Console()
+core.loop()
