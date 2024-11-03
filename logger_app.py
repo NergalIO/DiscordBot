@@ -19,7 +19,8 @@ import os
 #############################################
 
 if load_dotenv("log.env"):
-    required_items = {"logging-level", "logging-time-formatter", "logging-text-formatter", "logging-use-color-filter"}
+    required_items = {"logging-level", "logging-time-formatter", "logging-text-formatter",
+                      "logging-text-formatter-colored", "logging-use-color-filter"}
     optimal_items = {}
     
     not_found = set()
