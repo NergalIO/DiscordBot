@@ -1,4 +1,4 @@
-from .command import *
-from .core import *
+from .command import CommandTable, Command
+from .core import Console
 
 

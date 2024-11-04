@@ -7,6 +7,7 @@
 #############################################
 
 from dotenv import load_dotenv
+import bots.discord as discord
 import logger_app
 import core
 import os
@@ -20,7 +21,6 @@ import os
 #############################################
 
 logger = logger_app.prepareLogger(__name__)
-logger.debug("Logger is active now!")
 
 #############################################
 #############################################
@@ -61,5 +61,5 @@ else:
 #############################################
 #############################################
 
-core = core.Console()
-core.loop()
+bot = discord.DiscordBot()
+bot.start(os.environ.get("discord-bot-token"))

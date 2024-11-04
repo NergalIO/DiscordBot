@@ -61,7 +61,6 @@ class Console(Core):
         commands.extend([
             command.Command("help", "Get help menu", self._help, {}),
             command.Command("exit", "Close console", self._exit, {}),
-            command.Command("test", "test args", self._test, {"r_a": str})
             #command.Command("thread", "Start a command in other thread", thread, {"command": str})
         ])
         super().__init__(command.CommandTable(commands))
@@ -74,8 +73,7 @@ class Console(Core):
                 command, *args = input("test > ").split()
                 self.__call__(command, **self._args_to_kwargs(*args))
             except KeyboardInterrupt:
-                logger.info("User close console!")
-                return
+                self._exit()
             except Exception as e:
                 logger.critical(f"Critical error: {e}")
     
@@ -84,7 +82,11 @@ class Console(Core):
         for arg in args:
             arg = arg.replace(" ", "")
             key, value = arg.split("=")
-            arg, _type = value.split(":")
+            
+            try:
+                arg, _type = value.split(":")
+            except Exception as e:
+                arg, _type = value, "str"
             
             match _type:
                 case "int":
@@ -93,14 +95,15 @@ class Console(Core):
                     kwargs[key] = arg
         return kwargs
     
-    def _test(self, r_a: str) -> None:
-        print(f"Success: {r_a}")
-    
     def _help(self) -> None:
-        print("You called help menu for console.core...")
-        print("If argument must be int, you would write it like: [command] [name]=[argument]:int")
+        print("\n\tYou called help menu for console.core...")
+        print("\tIf argument must be int, you would write it like: [command] [name]=[argument]:int\n")
+        
+        print("\tCommand\t\tDescription\t\tArguments\n")
         for i, command in enumerate(self.commands.commands.values()):
-            print(f"{i}) {command.name}")
+            print(f"\t{command.name}\t\t{command.description}\t\t{command.args}")
+        print()
     
     def _exit(self) -> None:
+        logger.info("User close console")
         self.status = False
